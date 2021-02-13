@@ -4,6 +4,7 @@ use handler::SiteInfo;
 
 mod error;
 mod handler;
+mod mailer;
 
 #[tokio::main]
 async fn main() {

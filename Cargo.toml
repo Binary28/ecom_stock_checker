@@ -7,6 +7,9 @@ version = "0.1.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+lettre = "0.9.0"
+lettre_email="0.9.0"
 reqwest = "0.11"
 scraper = "0.12"
 tokio = {version = "1", features = ["full"]}
+dotenv="0.15"

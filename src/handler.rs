@@ -2,7 +2,7 @@ use reqwest::Client;
 use scraper::{Html, Selector};
 
 use crate::error::{ErrorKind, Errors};
-
+use crate::mailer::Mailer;
 #[derive(Debug)]
 pub struct SiteInfo<'a> {
     name: &'a str,
@@ -77,6 +77,8 @@ impl<'a> Handler<'a> {
     }
 
     async fn parse_html(&self) -> Result<(), Errors<'a>> {
+        let mut mailer = Mailer::new("tharunkumar0528@gmail.com")?;
+        // loop {
         for link in self.links.iter() {
             let selector = link.parse_selector().await?;
             let html = self.get_html(link.address).await?;
@@ -85,16 +87,20 @@ impl<'a> Handler<'a> {
                 let res = elem.text().collect::<Vec<_>>();
                 result.push(res.concat());
             }
-
             if result.concat().trim().trim_end_matches(".").to_string() == (self.keyword) {
                 println!(
-                    "[{}]{:^20}{:^20}",
-                    link.name, self.product_name, "Out of Stock"
-                )
+                    "[{}]{:^20}{:^20}{}",
+                    link.name, self.product_name, "Out of Stock", link.address
+                );
             } else {
-                println!("[{}]{:^20}{:^20}", link.name, self.product_name, "In Stock")
+                println!(
+                    "[{}]{:^20}{:^20}{}",
+                    link.name, self.product_name, "In Stock", link.address
+                );
+                mailer.send(link.address)?;
             }
         }
+        // }
         Ok(())
     }
 }

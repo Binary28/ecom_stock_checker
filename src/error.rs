@@ -7,7 +7,7 @@ use std::{
 pub enum ErrorKind {
     HtmlError,
     ParsingError,
-    MailError,
+    Alerterror,
 }
 
 pub struct Errors<'a> {
@@ -22,7 +22,7 @@ impl<'a> Display for Errors<'a> {
             ErrorKind::ParsingError => {
                 writeln!(f, "No css element {} exists in the dom", self.message)
             }
-            ErrorKind::MailError => writeln!(f, "Error Sending Email: {}", self.message),
+            ErrorKind::Alerterror => writeln!(f, "Error Sending Email: {}", self.message),
         }
     }
 }
